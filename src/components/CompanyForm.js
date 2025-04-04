@@ -102,7 +102,7 @@ function CompanyForm({ username, password }) {
 
     const categories = ['Technology', 'Retail', 'Health Care', 'Finance', 'Manufacturing', 'Education', 'Hospitality', 'Transportation', 'Energy', 'Agriculture'];
     const locations = ['London, China', 'Madrid, Japan', 'London, France', 'Berlin, Japan', 'Berlin, Netherlands', 'Sydney, Canada', 'Sydney, Germany', 'New York, Sweden', 'Paris, Spain', 'Amsterdam, China'];
-    const jsonFields = [{ name: 'financialStatement', label: 'Financial Statement' }, { name: 'transformation_plan', label: 'Careers' }, { name: 'portfolio', label: 'Portfolio' }, { name: 'investors', label: 'Investors' }, { name: 'assessment', label: 'Assessment' }];
+    const jsonFields = [{ name: 'financialStatement', label: 'Financial Statement' }, { name: 'transformation_plan', label: 'Assessment' }, { name: 'portfolio', label: 'Portfolio' }, { name: 'investors', label: 'Investors' }, { name: 'assessment', label: 'Assessment' }];
     const actionOptions = ["contact us", "apply", "purchase"];
 
     const renderStep = () => {
