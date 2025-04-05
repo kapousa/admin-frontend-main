@@ -19,11 +19,12 @@ function CompanyDetails({ username, password }) {
   const adjustCompanyData = (companyData) => {
     const adjustItems = (items) => {
       return items.map((item) => {
+        // Check for fileName directly in the item
         if (typeof item.value === 'string' && item.fileName) {
           return {
             ...item,
             file: {
-              file_url: `${item.fileName}`,
+              file_url: `${item.fileName}`, // Construct the URL
               filename: item.fileName,
             },
           };
@@ -42,7 +43,6 @@ function CompanyDetails({ username, password }) {
     return {
       ...companyData,
       financialStatement: adjustItems(companyData.financialStatement),
-      transformation_plan: adjustItems(companyData.transformation_plan),
       portfolio: adjustItems(companyData.portfolio),
       investors: adjustItems(companyData.investors),
       assessment: adjustItems(companyData.assessment),
@@ -53,29 +53,6 @@ function CompanyDetails({ username, password }) {
   if (!company) {
     return <Typography>Loading...</Typography>;
   }
-
-  const renderItemContent = (item) => {
-    return (
-      <Typography variant="body2">
-        {item.key}
-        <div dangerouslySetInnerHTML={{ __html: item.value }} />
-        {item.file && item.file.filename && (
-          <Typography variant="caption" sx={{ display: 'block' }}>
-            <a href={item.file.file_url} target="_blank" rel="noopener noreferrer" download={item.file.filename}>
-              Download
-            </a>
-          </Typography>
-        )}
-        {item.link && item.action && (
-          <Typography variant="caption" sx={{ display: 'block' }}>
-            <a href={item.link} target="_blank" rel="noopener noreferrer">
-              {item.action}
-            </a>
-          </Typography>
-        )}
-      </Typography>
-    );
-  };
 
   return (
     <Container maxWidth="md">
@@ -126,37 +103,93 @@ function CompanyDetails({ username, password }) {
           <Grid item xs={12}>
             <Typography variant="body1">
               <strong>Company Values</strong>
-              <div>{company.company_values.join(', ')}</div>
+              <div>
+                {company.company_values.join(', ')}
+              </div>
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle1"><h3>Portfolio</h3></Typography>
-            {company.portfolio.map((item, index) => renderItemContent(item))}
+            {company.portfolio.map((item, index) => (
+              <Typography key={index} variant="body2">
+                {item.key}
+                <div dangerouslySetInnerHTML={{ __html: item.value }} />
+                {item.file && item.file.filename && (
+                  <Typography variant="caption" sx={{ display: 'block' }}>
+                    <a href={item.file.file_url} target="_blank" rel="noopener noreferrer" download={item.file.filename}>
+                      Download
+                    </a>
+                  </Typography>
+                )}
+              </Typography>
+            ))}
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle1"><h3>Financial Statement</h3></Typography>
-            {company.financialStatement.map((item, index) => renderItemContent(item))}
+            {company.financialStatement.map((item, index) => (
+              <Typography key={index} variant="body2">
+                {item.key}
+                <div dangerouslySetInnerHTML={{ __html: item.value }} />
+                {item.file && item.file.filename && (
+                  <Typography variant="caption" sx={{ display: 'block' }}>
+                    <a href={item.file.file_url} target="_blank" rel="noopener noreferrer" download={item.file.filename}>
+                      Download
+                    </a>
+                  </Typography>
+                )}
+              </Typography>
+            ))}
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle1"><h3>Assessment</h3></Typography>
-            {company.transformation_plan.map((item, index) => renderItemContent(item))}
+            {company.assessment.map((item, index) => (
+              <Typography key={index} variant="body2">
+                {item.key}
+                <div dangerouslySetInnerHTML={{ __html: item.value }} />
+                {item.file && item.file.filename && (
+                  <Typography variant="caption" sx={{ display: 'block' }}>
+                    <a href={item.file.file_url} target="_blank" rel="noopener noreferrer" download={item.file.filename}>
+                      Download
+                    </a>
+                  </Typography>
+                )}
+              </Typography>
+            ))}
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle1"><h3>Investors</h3></Typography>
-            {company.investors.map((item, index) => renderItemContent(item))}
+            {company.investors.map((item, index) => (
+              <Typography key={index} variant="body2">
+                {item.key}
+                <div dangerouslySetInnerHTML={{ __html: item.value }} />
+                {item.file && item.file.filename && (
+                  <Typography variant="caption" sx={{ display: 'block' }}>
+                    <a href={item.file.file_url} target="_blank" rel="noopener noreferrer" download={item.file.filename}>
+                      Download
+                    </a>
+                  </Typography>
+                )}
+              </Typography>
+            ))}
           </Grid>
-          {/*
-          <Grid item xs={12}>
-            <Typography variant="subtitle1"><h3>Assessment</h3></Typography>
-            {company.assessment.map((item, index) => renderItemContent(item))}
-          </Grid>
-          */}
           {company.dynamicSections && company.dynamicSections.map((section, sectionIndex) => (
             <Grid item xs={12} key={`section-${sectionIndex}`}>
               <Typography variant="subtitle1">
                 <h3>{section.key}</h3>
               </Typography>
-              {section.value.map((item, itemIndex) => renderItemContent(item))}
+              {section.value && section.value.length > 0 && section.value.map((item, itemIndex) => (
+                <Typography key={`item-${itemIndex}`} variant="body2">
+                  {item.key}
+                  <div dangerouslySetInnerHTML={{ __html: item.value }} />
+                  {item.file && item.file.filename && (
+                    <Typography variant="caption" sx={{ display: 'block' }}>
+                      <a href={item.file.file_url} target="_blank" rel="noopener noreferrer" download={item.file.filename}>
+                        Download
+                      </a>
+                    </Typography>
+                  )}
+                </Typography>
+              ))}
             </Grid>
           ))}
         </Grid>

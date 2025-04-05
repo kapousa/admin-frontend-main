@@ -1,9 +1,7 @@
-// components/CompanyDetails.js
 import React, { useState, useEffect } from 'react';
 import { getCompany } from '../services/api';
 import { useParams } from 'react-router-dom';
 import { Container, Typography, Paper, Grid, Box, Avatar } from '@mui/material';
-
 
 function CompanyDetails({ username, password }) {
   const { id } = useParams();
@@ -34,18 +32,17 @@ function CompanyDetails({ username, password }) {
         return item;
       });
     };
-  
+
     const adjustSections = (sections) => {
       return sections.map((section) => ({
         ...section,
         value: adjustItems(section.value),
       }));
     };
-  
+
     return {
       ...companyData,
       financialStatement: adjustItems(companyData.financialStatement),
-      transformation_plan: adjustItems(companyData.transformation_plan),
       portfolio: adjustItems(companyData.portfolio),
       investors: adjustItems(companyData.investors),
       assessment: adjustItems(companyData.assessment),
@@ -82,36 +79,15 @@ function CompanyDetails({ username, password }) {
           <Grid item xs={12} sm={6}>
             <Typography variant="subtitle1"><strong>Headquarter:</strong> {company.location}</Typography>
           </Grid>
-          {/*
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subtitle1"><strong>Employees:</strong> {company.employees}</Typography>
-          </Grid>
-          */}
           <Grid item xs={12} sm={6}>
             <Typography variant="subtitle1"><strong>Website:</strong> {company.website}</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="subtitle1"><strong>Revenue:</strong> {company.revenue}</Typography>
           </Grid>
-          {/*
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subtitle1"><strong>Profit:</strong> {company.profit}</Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subtitle1"><strong>Assets:</strong> {company.assets}</Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subtitle1"><strong>Liabilities:</strong> {company.liabilities}</Typography>
-          </Grid>
-          */}
           <Grid item xs={12} sm={6}>
             <Typography variant="subtitle1"><strong>Founded:</strong> {company.founded}</Typography>
           </Grid>
-          {/*
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subtitle1"><strong>Headquarters:</strong> {company.headquarters}</Typography>
-          </Grid>
-          */}
           <Grid item xs={12}>
             <Typography variant="body1">
               <strong>Description</strong>
@@ -126,11 +102,11 @@ function CompanyDetails({ username, password }) {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="body1">
-              <strong>Company Values</strong> 
+              <strong>Company Values</strong>
               <div>
                 {company.company_values.join(', ')}
               </div>
-              </Typography>
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle1"><h3>Portfolio</h3></Typography>
@@ -166,7 +142,7 @@ function CompanyDetails({ username, password }) {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle1"><h3>Assessment</h3></Typography>
-            {company.transformation_plan.map((item, index) => (
+            {company.assessment.map((item, index) => (
               <Typography key={index} variant="body2">
                 {item.key}
                 <div dangerouslySetInnerHTML={{ __html: item.value }} />
@@ -217,7 +193,7 @@ function CompanyDetails({ username, password }) {
               <Typography variant="subtitle1">
                 <h3>{section.key}</h3>
               </Typography>
-              {section.value.map((item, itemIndex) => (
+              {section.value && section.value.length > 0 && section.value.map((item, itemIndex) => (
                 <Typography key={`item-${itemIndex}`} variant="body2">
                   {item.key}
                   <div dangerouslySetInnerHTML={{ __html: item.value }} />

@@ -1,4 +1,3 @@
-// components/CompanyList.js
 import React, { useState, useEffect } from 'react';
 import { getCompanies } from '../services/api';
 import { Link } from 'react-router-dom';
