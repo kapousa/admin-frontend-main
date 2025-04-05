@@ -281,7 +281,86 @@ function EditCompanyForm({ username, password }) {
         </Typography>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            {/* ... other form fields ... */}
+            <Grid item xs={12} sm={6}>
+              <TextField fullWidth label="Name" name="name" value={company.name} onChange={handleChange} required />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel id="category-label">Category</InputLabel>
+                <Select labelId="category-label" id="category" name="category" value={company.category} label="Category" onChange={handleChange}>
+                  {categories.map((category) => (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel id="location-label">Headquarter</InputLabel>
+                <Select labelId="location-label" id="location" name="location" value={company.location} label="Location" onChange={handleChange}>
+                  {locations.map((location) => (
+                    <MenuItem key={location} value={location}>
+                      {location}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel id="size-label">Size</InputLabel>
+                <Select labelId="size-label" id="size" name="size" value={company.size} label="Size" onChange={handleChange}>
+                  <MenuItem value="Less than 50 employees">Less than 50 employees</MenuItem>
+                  <MenuItem value="51 - 100 employees">51 - 100</MenuItem>
+                  <MenuItem value="101 - 500 employees">101 - 500</MenuItem>
+                  <MenuItem value="501 - 1000 employees">501 - 1000</MenuItem>
+                  <MenuItem value="1001 - 10000employees">1001 - 10000</MenuItem>
+                  <MenuItem value="More than 10000 employees">More than 10000</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField fullWidth label="Website" name="website" value={company.website} onChange={handleChange} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField fullWidth label="Founded Date" name="founded" value={company.founded} onChange={handleChange} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField fullWidth label="Headquarters" name="headquarters" value={company.headquarters} onChange={handleChange} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField fullWidth label="Revenue" name="revenue" type="number" value={company.revenue} onChange={handleChange} />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" gutterBottom fontWeight="bold">
+                Mission
+              </Typography>
+              <ReactQuill
+                value={company.mission}
+                onChange={(content) => handleJsonChange(0, 'mission', content)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" gutterBottom fontWeight="bold">
+                Description
+              </Typography>
+              <ReactQuill
+                value={company.description}
+                onChange={(content) => handleJsonChange(0, 'description', content)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField fullWidth label="Company Values (comma-separated)" name="company_values" value={company.company_values} onChange={handleChange} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1" gutterBottom fontWeight="bold">
+                Logo
+              </Typography>
+              <input type="file" accept="image/*" onChange={handleLogoChange} />
+              {logoPreview && <img src={logoPreview} alt="Company Logo Preview" style={{ maxWidth: '100px', marginTop: '10px' }} />}
+            </Grid>
             {jsonFields.map((field) => (
               <Grid item xs={12} key={field.name}>
                 <Typography variant="subtitle1" gutterBottom fontWeight="bold">
@@ -297,36 +376,39 @@ function EditCompanyForm({ username, password }) {
                         <ReactQuill value={item.value} onChange={(content) => handleJsonChange(index, field.name, content)} placeholder="Details" />
                       </div>
                     </Grid>
+                    <Box display="flex" gap="8px">
+                      <Grid item xs={12}>
+                        <FormControl fullWidth>
+                          <InputLabel id={`action-label-${field.name}-${index}`}>Action</InputLabel>
+                          <Select
+                            labelId={`action-label-${field.name}-${index}`}
+                            id={`action-${field.name}-${index}`}
+                            name={`action-${field.name}-${index}`}
+                            value={item.action}
+                            label="Action"
+                            onChange={(e) => handleActionChange(index, field.name, e)}
+                          >
+                            {actionOptions.map((option) => (
+                              <MenuItem key={option} value={option}>
+                                {option}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Link"
+                          name="link"
+                          value={item.link}
+                          onChange={(e) => handleLinkChange(index, field.name, e)}
+                        />
+                      </Grid>
+                    </Box>
                     <Grid item xs={12}>
-                      <FormControl fullWidth>
-                        <InputLabel id={`action-label-${field.name}-${index}`}>Action</InputLabel>
-                        <Select
-                          labelId={`action-label-${field.name}-${index}`}
-                          id={`action-${field.name}-${index}`}
-                          name={`action-${field.name}-${index}`}
-                          value={item.action}
-                          label="Action"
-                          onChange={(e) => handleActionChange(index, field.name, e)}
-                        >
-                          {actionOptions.map((option) => (
-                            <MenuItem key={option} value={option}>
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Link"
-                        name="link"
-                        value={item.link}
-                        onChange={(e) => handleLinkChange(index, field.name, e)}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      {item.fileName ? (
+                      <input type="file" onChange={(e) => handleFileChange(index, field.name, e)} />
+                      {item.fileName && (
                         <a
                           href={`${item.fileName}`}
                           target="_blank"
@@ -334,8 +416,6 @@ function EditCompanyForm({ username, password }) {
                         >
                           Download
                         </a>
-                      ) : (
-                        <input type="file" onChange={(e) => handleFileChange(index, field.name, e)} />
                       )}
                     </Grid>
                     <Grid item xs={12} style={{ display: 'flex', alignItems: 'center' }}>
@@ -348,7 +428,6 @@ function EditCompanyForm({ username, password }) {
                 <Button onClick={() => addJsonField(field.name)}>Add Field</Button>
               </Grid>
             ))}
-            {/* ... dynamic sections ... */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom fontWeight="bold">
                 Dynamic Sections
@@ -384,36 +463,39 @@ function EditCompanyForm({ username, password }) {
                           />
                         </div>
                       </Grid>
+                      <Box display="flex" gap="8px">
+                        <Grid item xs={12}>
+                          <FormControl fullWidth>
+                            <InputLabel id={`dynamic-action-label-${sectionIndex}-${itemIndex}`}>Action</InputLabel>
+                            <Select
+                              labelId={`dynamic-action-label-${sectionIndex}-${itemIndex}`}
+                              id={`dynamic-action-${sectionIndex}-${itemIndex}`}
+                              name={`dynamic-action-${sectionIndex}-${itemIndex}`}
+                              value={item.action}
+                              label="Action"
+                              onChange={(e) => handleDynamicActionChange(sectionIndex, itemIndex, e)}
+                            >
+                              {actionOptions.map((option) => (
+                                <MenuItem key={option} value={option}>
+                                  {option}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Link"
+                            name="link"
+                            value={item.link}
+                            onChange={(e) => handleDynamicLinkChange(sectionIndex, itemIndex, e)}
+                          />
+                        </Grid>
+                      </Box>
                       <Grid item xs={12}>
-                        <FormControl fullWidth>
-                          <InputLabel id={`dynamic-action-label-${sectionIndex}-${itemIndex}`}>Action</InputLabel>
-                          <Select
-                            labelId={`dynamic-action-label-${sectionIndex}-${itemIndex}`}
-                            id={`dynamic-action-${sectionIndex}-${itemIndex}`}
-                            name={`dynamic-action-${sectionIndex}-${itemIndex}`}
-                            value={item.action}
-                            label="Action"
-                            onChange={(e) => handleDynamicActionChange(sectionIndex, itemIndex, e)}
-                          >
-                            {actionOptions.map((option) => (
-                              <MenuItem key={option} value={option}>
-                                {option}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          fullWidth
-                          label="Link"
-                          name="link"
-                          value={item.link}
-                          onChange={(e) => handleDynamicLinkChange(sectionIndex, itemIndex, e)}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        {item.fileName ? (
+                        <input type="file" onChange={(e) => handleDynamicFileChange(sectionIndex, itemIndex, e)} />
+                        {item.fileName && (
                           <a
                             href={`${item.fileName}`}
                             target="_blank"
@@ -421,8 +503,6 @@ function EditCompanyForm({ username, password }) {
                           >
                             Download
                           </a>
-                        ) : (
-                          <input type="file" onChange={(e) => handleDynamicFileChange(sectionIndex, itemIndex, e)} />
                         )}
                       </Grid>
                       <Grid item xs={12} style={{ display: 'flex', alignItems: 'center' }}>
@@ -440,7 +520,11 @@ function EditCompanyForm({ username, password }) {
               ))}
               <Button onClick={addDynamicSection}>Add Section</Button>
             </Grid>
-            {/* ... submit button ... */}
+            <Grid item xs={12} style={{ marginTop: '20px' }}>
+              <StyledButton type="submit" variant="contained" color="primary">
+                Update Company
+              </StyledButton>
+            </Grid>
           </Grid>
         </form>
       </StyledPaper>
