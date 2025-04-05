@@ -248,7 +248,7 @@ function Step1({ company, setCompany, categories, locations }) {
             <MenuItem value="51 - 100 employees">51 - 100</MenuItem>
             <MenuItem value="101 - 500 employees">101 - 500</MenuItem>
             <MenuItem value="501 - 1000 employees">501 - 1000</MenuItem>
-            <MenuItem value="1001 - 10000employees">1001 - 10000</MenuItem>
+            <MenuItem value="1001 - 10000 employees">1001 - 10000</MenuItem>
             <MenuItem value="More than 10000 employees">More than 10000</MenuItem>
           </Select>
         </FormControl>
