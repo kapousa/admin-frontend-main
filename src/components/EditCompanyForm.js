@@ -372,9 +372,6 @@ function EditCompanyForm({ username, password }) {
               <TextField fullWidth label="Founded Date" name="founded" value={company.founded} onChange={handleChange} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField type='hidden' fullWidth label="Headquarters" name="headquarters" value={company.headquarters} onChange={handleChange} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
               <TextField fullWidth label="Revenue" name="revenue" type="number" value={company.revenue} onChange={handleChange} />
             </Grid>
             <Grid item xs={12}>
