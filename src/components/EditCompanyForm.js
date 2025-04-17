@@ -223,7 +223,7 @@ function EditCompanyForm({ username, password }) {
     console.log(formData);
 
     try {
-      await axios.put(`${API_BASE_URL}/admin/companies/${id}`, formData, {
+      await axios.put(`${API_BASE_URL}/companies/${id}`, formData, {
         headers: {
           Authorization: `Basic ${btoa(`${username}:${password}`)}`,
         },
